@@ -1,0 +1,13 @@
+= treeoflife-dl
+
+Downloads the high-resolution Tree of Life graphic from http://www.open2.net/treeoflife/index.html which was on a poster associated with BBC's Life nature documentary.
+
+== Usage
+
+Download the images:
+ $ ./tol-dl.pl
+
+Assemble them using ImageMagick's montage:
+ $ ./tol-mon.pl
+
+The finished graphic is out.jpg - resolution 7424x12032 pixels, size 8.4MB.
