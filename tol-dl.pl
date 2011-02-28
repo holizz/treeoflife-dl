@@ -35,10 +35,13 @@ sub dl {
 
     my $retcode = $curl->perform;
 
-    if ($retcode == 0) {
+    die 'horribly' unless ($retcode == 0);
+
+    if ($response !~ m[HTTP/1\.1 302 Found]) {
       print "Downloading...\n";
 
-      $while = 0;
+      # Strip header
+      $response =~ s/^.*\r\n\r\n//s;
 
       # Open a file
       open my $f, ">$zoom_level-$x-$y.jpg";
@@ -49,6 +52,8 @@ sub dl {
 
       close $f;
       print "Saved!\n";
+
+      $while = 0;
 
     } else {
       print "Incrementing \$tile_group\n";
@@ -68,8 +73,8 @@ our $tile_group = 0;
 our $curl = WWW::Curl::Easy->new;
 $curl->setopt(CURLOPT_HEADER,1);
 
-for (my $x = 0; $x <= $x_max; $x++) {
-  for (my $y = 0; $y <= $y_max; $y++) {
+for (my $y = 0; $y <= $y_max; $y++) {
+  for (my $x = 0; $x <= $x_max; $x++) {
     dl $uri, $zoom_level, $x, $y;
   }
 }
